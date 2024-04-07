@@ -1,18 +1,4 @@
-const cardList = [
-    {
-        title: "Kitten 2",
-        image: "images/kitten2.jpg",
-        link: "About Kitten 2",
-        desciption: "Demo desciption about kitten 2"
-    },
-    {
-        title: "Kitten 3",
-        image: "images/kitten3.jpg",
-        link: "About Kitten 3",
-        desciption: "Demo desciption about kitten 3"
-    }
-]
- 
+
 const addCards = (items) => {
     items.forEach(item => {
         let itemToAppend = '<div class="col s4 center-align">' +
@@ -33,19 +19,30 @@ const clickMe = () => {
  
 const submitForm = () => {
     let formData = {};
-    formData.first_name = $('#first_name').val();
-    formData.last_name = $('#last_name').val();
-    formData.password = $('#password').val();
-    formData.email = $('#email').val();
- 
-    console.log("Form Data Submitted: ", formData);
+    formData.title = $('#title').val();
+    formData.subTitle = $('#subTitle').val();
+    formData.path = $('#path').val();
+    formData.description = $('#description').val();
+
+    console.log(formData);
+    postCats(formData);
 }
- 
+const getCats=()=>{
+    $.get('/api/cards',(response)=>{ 
+   if(response.statusCode==200){
+    addCards(response.data);
+    }
+    })
+}
+const postCats=(formdata)=>{
+    $.post('/api/cards',formdata);
+}
 $(document).ready(function () {
     $('.materialboxed').materialbox();
-    addCards(cardList);
+    
     $('.modal').modal();
     $('#formSubmit').click(() => {
         submitForm();
     })
+    getCats();
 })
